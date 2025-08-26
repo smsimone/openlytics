@@ -1,23 +1,30 @@
 <html>
-  <head>
-    <title>Analytics</title>
-    <script
-      src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
-      integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <div>
-    <form hx-post="/api/login" hx-target="#response" hx-swap="innerHTML">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required />
-      <br />
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required />
-      <br />
-      <button type="submit">Login</button>
-      <button type="button" hx-post="/api/register" hx-target="#response" hx-swap="innerHTML">Register</button>
-    </form>
-    <div id="response"></div>
-  </div>
+    <head>
+        <title>Analytics</title>
+        <script
+            src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
+            integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <div>
+        <form hx-post="/api/login" hx-target="#response" hx-swap="innerHTML">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required />
+            <br />
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required />
+            <br />
+            <button type="submit">Login</button>
+            <button
+                type="button"
+                hx-post="/api/register"
+                hx-target="#response"
+                hx-swap="innerHTML"
+            >
+                Register
+            </button>
+        </form>
+        <div id="response"></div>
+    </div>
 </html>
