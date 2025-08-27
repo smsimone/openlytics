@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { Response } from "express";
-import { AllTemplates, ComponentTemplates, Routes, ViewTemplates } from "../templates";
+import { AllTemplates, Routes } from "../views/templates";
 
 export type TemplateParams = { [key: string]: string | number | null | undefined }
 
@@ -37,5 +37,5 @@ export function redirect(res: Response, page: Routes, invalidateSession: boolean
   if (invalidateSession) {
     res.clearCookie("sessionId");
   }
-  res.header("HX-Redirect", page).send();
+  res.header("HX-Redirect", page).send()
 }

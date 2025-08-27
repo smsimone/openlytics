@@ -1,7 +1,7 @@
 import db from "../../db";
 import { Request, Response } from "express";
 import crypto from "crypto";
-import { loadTemplate, redirect } from "../../utils/templater";
+import { loadTemplate, redirect, sendFile } from "../../utils/templater";
 import { Project } from "@prisma/client/edge";
 
 function projectToCard(project: Project): string {
@@ -15,7 +15,6 @@ function projectToCard(project: Project): string {
 
 export async function getProjectList(req: Request, resp: Response) {
   const sessionId = req.cookies.sessionId;
-  console.log("Fetching project list for sessionId:", sessionId);
 
   const projects = await db.project.findMany({
     where: {
@@ -30,12 +29,7 @@ export async function getProjectList(req: Request, resp: Response) {
   });
 
   if (projects.length === 0) {
-    resp.send(`
-           <div class="alert alert-info">No projects found. Create a new project to get started!</div>
-           <a
-            href="/new_project"
-            class="btn btn-primary">New project</a>
-           `);
+    sendFile(resp, 'templates/components/index_empty_state', '.', {});
     return;
   }
 
@@ -47,7 +41,6 @@ export async function createProject(
   resp: Response,
 ) {
   const sessionId: string = req.cookies.sessionId;
-  console.log("Creating project", req.body);
   const { name, description } = req.body;
   if (!name || name.trim().length === 0) {
     resp.status(400).send("Project name is required");
@@ -64,7 +57,7 @@ export async function createProject(
     },
   });
   if (!user) {
-    console.log("No user found for sessionId:", sessionId);
+    console.error("No user found for sessionId:", sessionId);
     redirect(resp, "/login", true);
     return;
   }
@@ -93,6 +86,45 @@ export async function createProject(
     },
   });
 
-  console.log("Creating new project for sessionId:", sessionId);
+  redirect(resp, "/", false);
+}
+
+export async function deleteProject(req: Request, resp: Response) {
+  const sessionId: string = req.cookies.sessionId;
+  const projectId = parseInt(req.params.id);
+
+  const user = await db.authUser.findFirst({
+    where: {
+      UserSessions: {
+        some: {
+          sessionId,
+        },
+      },
+    },
+  });
+  if (!user) {
+    console.error("No user found for sessionId:", sessionId);
+    redirect(resp, "/login", true);
+    return;
+  }
+
+  const project = await db.project.findFirst({
+    where: {
+      id: projectId,
+      ownerId: user.id,
+    },
+  });
+  if (!project) {
+    resp.status(404).send("Project not found");
+    return;
+  }
+
+  await db.projectConfiguration.delete({
+    where: { projectId: projectId },
+  })
+  await db.project.delete({
+    where: { id: projectId },
+  });
+
   redirect(resp, "/", false);
 }

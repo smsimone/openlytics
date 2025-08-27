@@ -13,6 +13,17 @@ app.get("/public/:item", (req: express.Request, res: express.Response) => {
   res.sendFile(`public/${item}`, { root: "." });
 });
 
+app.use((req, res, next) => {
+  const start = Date.now();
+  next();
+  const duration = Date.now() - start;
+
+  if (!req.path.startsWith("/api/")) {
+    return;
+  }
+  console.log(`[${Date.now()}] ${req.method} ${req.path}\t(${res.statusCode}) ${duration}ms`);
+});
+
 registerRoutes(app);
 registerApis(app);
 

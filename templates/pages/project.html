@@ -1,43 +1,20 @@
-<html>
-    <head>
-        <title>My Web Page</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" type="image/x-icon" href="/public/favicon.ico" />
-        <script
-            src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
-            integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"
-            crossorigin="anonymous"
-        ></script>
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            crossorigin="anonymous"
-        />
-    </head>
-    <body>
-        <nav
-            class="navbar navbar-light bg-light shadow-lg rounded-3 p-2 mb-5 mt-3"
-        >
-            <a class="navbar-brand" href="/">{{name}}</a>
-            <button
-                type="button"
-                id="logout-button"
-                hx-post="/api/logout"
-                hx-trigger="click"
-                class="btn btn-danger"
-            >
-                Logout
-            </button>
-        </nav>
-        <div id="content">
-            Project id: {{id}}
-            <br />
-            Project name: {{name}}
-            <br />
-            Secret: {{secret}}
-            <br />
-            API Key: {{apiKey}}
-        </div>
-    </body>
-</html>
+<div id="content">
+  Project id: {{id}}
+  <br />
+  Project name: {{name}}
+  <br />
+  Secret: {{secret}}
+  <br />
+  API Key: {{apiKey}}
+
+  <button
+    type="button"
+    class="btn btn-danger"
+    hx-delete="/api/project/{{id}}"
+    hx-confirm="Are you sure you want to delete this project?"
+    hx-trigger="click"
+    hx-swap="none"
+  >
+    Delete
+  </button>
+</div>
