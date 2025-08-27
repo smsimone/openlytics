@@ -6,6 +6,7 @@ import {
   getProjectList,
 } from "./controller/project";
 import { Routes } from "./api_routes";
+import { getProjectEvents } from "./controller/events";
 
 const apiRoutes: Routes = {
   '/api/login': {
@@ -25,9 +26,10 @@ const apiRoutes: Routes = {
   },
   '/api/project/:id': {
     DELETE: deleteProject,
-    // PUT: updateProject, // Example for future expansion
-    // DELETE: deleteProject, // Example for future expansion
   },
+  '/api/project/:id/events': {
+    GET: getProjectEvents,
+  }
 }
 
 export default function registerApis(app: Express) {

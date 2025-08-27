@@ -56,6 +56,7 @@ model UserEvent {
 
 model Event {
     id           Int       @id @default(autoincrement())
+    eventType    String
     userId       String
     UserEvent    UserEvent @relation(fields: [userId], references: [id])
     projectId    Int
