@@ -5,19 +5,23 @@
   "main": "src/main.ts",
   "type": "module",
   "scripts": {
-    "start": "npx tsx src/main.ts"
+    "start": "npx tsx src/main.ts",
+    "start:ingestor": "npx tsx src/ingestor/main.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.7.0",
   "dependencies": {
+    "@cloudamqp/amqp-client": "^3.2.1",
     "@prisma/client": "6.14.0",
     "@types/body-parser": "^1.19.6",
     "@types/cookie-parser": "^1.4.9",
+    "@types/dotenv": "^8.2.3",
     "body-parser": "^2.2.0",
     "cookie-parser": "^1.4.7",
     "crypto-js": "^4.2.0",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0"
   },
   "devDependencies": {

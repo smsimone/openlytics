@@ -5,7 +5,7 @@ import { loadTemplate, redirect, sendFile } from "../../utils/templater";
 import { Project } from "@prisma/client/edge";
 
 function projectToCard(project: Project): string {
-  return loadTemplate("./templates/components/project_card.html", {
+  return loadTemplate("templates/components/project_card", {
     name: project.name,
     description: project.description ?? "",
     lastEdited: project.updatedAt.toISOString(),

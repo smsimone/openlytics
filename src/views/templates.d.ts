@@ -1,5 +1,5 @@
 type Views = "index" | "login" | "project" | "new_project";
-type Components = "project_card" | "index_empty_state"
+type Components = "project_card" | "index_empty_state" | "event_row" | "project_card";
 
 export type ViewTemplates = `templates/pages/${Views}`;
 

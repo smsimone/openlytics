@@ -7,3 +7,10 @@ services:
       POSTGRES_DB: analytics
     ports:
       - "5432:5432"
+
+  lavin_mq:
+    container_name: lavin_mq
+    image: cloudamqp/lavinmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"

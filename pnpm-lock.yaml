@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@cloudamqp/amqp-client':
+        specifier: ^3.2.1
+        version: 3.2.1
       '@prisma/client':
         specifier: 6.14.0
         version: 6.14.0(prisma@6.14.0(typescript@5.9.2))(typescript@5.9.2)
@@ -17,6 +20,9 @@ importers:
       '@types/cookie-parser':
         specifier: ^1.4.9
         version: 1.4.9(@types/express@5.0.3)
+      '@types/dotenv':
+        specifier: ^8.2.3
+        version: 8.2.3
       body-parser:
         specifier: ^2.2.0
         version: 2.2.0
@@ -26,6 +32,9 @@ importers:
       crypto-js:
         specifier: ^4.2.0
         version: 4.2.0
+      dotenv:
+        specifier: ^17.2.1
+        version: 17.2.1
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -47,6 +56,10 @@ importers:
         version: 5.9.2
 
 packages:
+
+  '@cloudamqp/amqp-client@3.2.1':
+    resolution: {integrity: sha512-42XNjtcJTg7mKtMVNx3mdvF/RiPKAkKBRGRy+NvjZnbbkqomiWSF1mT2nwDrmIt8MUralFjlOxG4XPoWtlk2Wg==}
+    engines: {node: '>=16.0.0'}
 
   '@esbuild/aix-ppc64@0.25.9':
     resolution: {integrity: sha512-OaGtL73Jck6pBKjNIe24BnFE6agGl+6KxDtTfHhy1HmhthfKouEcOhqpSL64K4/0WCtbKFLOdzD/44cJ4k9opA==}
@@ -248,6 +261,10 @@ packages:
     peerDependencies:
       '@types/express': '*'
 
+  '@types/dotenv@8.2.3':
+    resolution: {integrity: sha512-g2FXjlDX/cYuc5CiQvyU/6kkbP1JtmGzh0obW50zD7OKeILVL0NSpPWLXVfqoAGQjom2/SLLx9zHq0KXvD6mbw==}
+    deprecated: This is a stub types definition. dotenv provides its own type definitions, so you do not need this installed.
+
   '@types/express-serve-static-core@5.0.7':
     resolution: {integrity: sha512-R+33OsgWw7rOhD1emjU7dzCDHucJrgJXMA5PYCzJxVil0dsyx5iBEPHqpPfiKNJQb7lZ1vxwoLR4Z87bBUpeGQ==}
 
@@ -368,6 +385,10 @@ packages:
 
   dotenv@16.6.1:
     resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
+    engines: {node: '>=12'}
+
+  dotenv@17.2.1:
+    resolution: {integrity: sha512-kQhDYKZecqnM0fCnzI5eIv5L4cAe/iRI+HqMbO/hbRdTAeXDG+M9FjipUxNfbARuEg4iHIbhnhs78BCHNbSxEQ==}
     engines: {node: '>=12'}
 
   dunder-proto@1.0.1:
@@ -679,6 +700,8 @@ packages:
 
 snapshots:
 
+  '@cloudamqp/amqp-client@3.2.1': {}
+
   '@esbuild/aix-ppc64@0.25.9':
     optional: true
 
@@ -807,6 +830,10 @@ snapshots:
     dependencies:
       '@types/express': 5.0.3
 
+  '@types/dotenv@8.2.3':
+    dependencies:
+      dotenv: 17.2.1
+
   '@types/express-serve-static-core@5.0.7':
     dependencies:
       '@types/node': 24.3.0
@@ -933,6 +960,8 @@ snapshots:
   destr@2.0.5: {}
 
   dotenv@16.6.1: {}
+
+  dotenv@17.2.1: {}
 
   dunder-proto@1.0.1:
     dependencies:

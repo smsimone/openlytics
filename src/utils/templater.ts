@@ -5,7 +5,7 @@ import { AllTemplates, Routes } from "../views/templates";
 export type TemplateParams = { [key: string]: string | number | null | undefined }
 
 export function loadTemplate(
-  path: string,
+  path: AllTemplates,
   params: TemplateParams = {},
   root: string = ".",
 ): string {
@@ -22,15 +22,13 @@ export function loadTemplate(
 }
 
 export function sendFile(res: Response, path: AllTemplates, root: string = ".", params: TemplateParams = {}) {
-  const htmlPath = path.endsWith('.html') ? path : `${path}.html`;
-
   if (Object.keys(params).length === 0) {
+    const htmlPath = path.endsWith('.html') ? path : `${path}.html`;
     res.sendFile(htmlPath, { root })
     return
   }
 
-  const content = loadTemplate(htmlPath, params, root);
-  res.send(content);
+  res.send(loadTemplate(path, params, root));
 }
 
 export function redirect(res: Response, page: Routes, invalidateSession: boolean = false) {

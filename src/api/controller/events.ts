@@ -1,21 +1,28 @@
 import { Request, Response } from 'express';
+import { loadTemplate } from '../../utils/templater';
 import db from '../../db';
 
 export async function getProjectEvents(req: Request, res: Response) {
     const projectId = parseInt(req.params.id);
 
-    const events = await db.event.findMany({ where: { projectId } })
+    const events = await db.event.findMany({
+        where: { projectId },
+        orderBy: { createdAt: 'desc' },
+    })
 
     if (!events || events.length === 0) {
         res.status(204).send('<div>No events found for this project.</div>');
         return;
     }
 
-    res.send(events.map(event => `
-        <div>
-            <div>${event.eventType}</div>
-            <div>${event.createdAt}</div>
-            </div>
-            `
-    ).join(''));
+    res.send(events.map(ev => loadTemplate(
+        'templates/components/event_row',
+        {
+            id: ev.id,
+            eventType: ev.eventType,
+            userId: ev.userId,
+            createdAt: ev.createdAt.toISOString(),
+            customFields: JSON.stringify(ev.customFields, null, 2)
+        }
+    )).join(''));
 }   
