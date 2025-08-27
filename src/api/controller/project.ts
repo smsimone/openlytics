@@ -1,7 +1,7 @@
 import db from "../../db";
 import { Request, Response } from "express";
 import crypto from "crypto";
-import { loadTemplate } from "../../utils/templater";
+import { loadTemplate, redirect } from "../../utils/templater";
 import { Project } from "@prisma/client/edge";
 
 function projectToCard(project: Project): string {
@@ -32,21 +32,14 @@ export async function getProjectList(req: Request, resp: Response) {
   if (projects.length === 0) {
     resp.send(`
            <div class="alert alert-info">No projects found. Create a new project to get started!</div>
-           <button
-            hx-get="/redirect/new_project"
-            hx-trigger="click"
-            class="btn btn-primary">New project</button>
+           <a
+            href="/new_project"
+            class="btn btn-primary">New project</a>
            `);
     return;
   }
 
   resp.send(`${projects.map(projectToCard).join("\n")}`);
-}
-
-export function getProject(req: Request, resp: Response) {
-  const projectId = req.params.id;
-  console.log(`Fetching project with ID: ${projectId}`);
-  resp.header("HX-Redirect", `/project/${projectId}`).send();
 }
 
 export async function createProject(
@@ -72,7 +65,7 @@ export async function createProject(
   });
   if (!user) {
     console.log("No user found for sessionId:", sessionId);
-    resp.clearCookie("sessionId").header("HX-Redirect", "/login").send();
+    redirect(resp, "/login", true);
     return;
   }
 
@@ -101,5 +94,5 @@ export async function createProject(
   });
 
   console.log("Creating new project for sessionId:", sessionId);
-  resp.header("HX-Redirect", "/").send();
+  redirect(resp, "/", false);
 }

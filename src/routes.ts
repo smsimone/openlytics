@@ -1,11 +1,11 @@
 import db from "./db";
 import { Request, Response, Express } from "express";
-import { loadTemplate } from "./utils/templater";
+import { loadTemplate, redirect, sendFile } from "./utils/templater";
 
 export default function registerRoutes(app: Express) {
   app.get("/login", (req: Request, res: Response) => {
     console.log("Serving login page");
-    res.sendFile("templates/pages/login.html", { root: "." });
+    sendFile(res, "templates/pages/login")
   });
 
   app.use(async (req: Request, res: Response, next) => {
@@ -36,14 +36,11 @@ export default function registerRoutes(app: Express) {
       return;
     }
 
-    res
-      .clearCookie("sessionId")
-      .header("HX-Redirect", "/login")
-      .redirect("/login");
+    redirect(res, "/login", true);
   });
 
   app.get("/", (req: Request, res: Response) => {
-    res.sendFile("templates/pages/index.html", { root: "." });
+    sendFile(res, "templates/pages/index")
   });
 
   app.get("/project/:id", async (req: Request, res: Response) => {
@@ -54,22 +51,21 @@ export default function registerRoutes(app: Express) {
       include: { ProjectConfiguration: true },
     });
     if (!project) {
-      res.header("HX-Redirect", "/").redirect("/");
+      redirect(res, "/");
       return;
     }
 
     console.log(`Fetching project with ID: ${projectId}`);
-    res.send(
-      loadTemplate("./templates/pages/project.html", {
-        id: projectId,
-        name: project.name,
-        secret: project.ProjectConfiguration?.secret,
-        apiKey: project.ProjectConfiguration?.apiKey,
-      }),
-    );
+    sendFile(res, "templates/pages/project", ".", {
+      'id': projectId,
+      'name': project.name,
+      'secret': project.ProjectConfiguration?.secret,
+      'apiKey': project.ProjectConfiguration?.apiKey,
+    });
+    console.log(`Served project page for project ID: ${projectId} -> ${project.name}`);
   });
 
   app.get("/new_project", (req: Request, res: Response) => {
-    res.sendFile("templates/pages/new_project.html", { root: "." });
+    sendFile(res, "templates/pages/new_project")
   });
 }

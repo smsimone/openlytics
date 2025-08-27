@@ -1,6 +1,7 @@
 import db from "../../db";
 import { Request, Response } from "express";
 import crypto from "crypto";
+import { redirect } from "../../utils/templater";
 
 export async function login(
   req: Request<{ username: string; password: string }>,
@@ -36,7 +37,7 @@ export async function logout(req: Request, res: Response) {
     where: { sessionId },
   });
 
-  res.clearCookie("sessionId").header("HX-Redirect", "/login").send();
+  redirect(res, "/login", true);
 }
 
 export async function register(

@@ -13,13 +13,6 @@ app.get("/public/:item", (req: express.Request, res: express.Response) => {
   res.sendFile(`public/${item}`, { root: "." });
 });
 
-app.get(/\/redirect.*/, (req: express.Request, res: express.Response) => {
-  // const page = req.params.page;
-  const path = req.path.replace("/redirect/", "");
-  console.log("redirecting to", path);
-  res.header("HX-Redirect", `/${path}`).send();
-});
-
 registerRoutes(app);
 registerApis(app);
 
