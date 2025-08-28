@@ -59,37 +59,9 @@
 
   <div class="container">
     <div class="row">
-      <!-- events card -->
-      <div class="col align-content-center">
-        <div class="card overflow-scroll">
-          <h5 class="card-header">
-            Events for project <span style="font-style: italic">{{name}}</span>
-          </h5>
-          <div class="card-body" style="max-height: 400px;">
-            <div
-              hx-get="/api/project/{{id}}/events"
-              hx-trigger="load, every 2s"
-              hx-swap="innerHTML"
-            >
-              <div>
-                <div
-                  class="progress mb-2"
-                  role="progressbar"
-                  aria-label="loading bar"
-                >
-                  <div
-                    class="progress-bar progress-bar-striped progress-bar-animated indeterminate"
-                  ></div>
-                </div>
-                <span class="fst-italic">Waiting for new events...</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <!-- secrets card -->
-      <div class="col align-content-center col-6">
-        <div class="card">
+      <div class="align-content-center mb-4">
+        <div class="card shadow-lg rounded-4">
           <h5 class="card-header">Secrets</h5>
           <div class="card-body">
             <div class="card-text overflow-hidden">
@@ -118,6 +90,45 @@
                 </button>
               </p>
             </div>
+          </div>
+        </div>
+      </div>
+      <!-- events card -->
+      <div class="mb-5">
+        <div class="card overflow-hidden shadow-lg rounded-4">
+          <h5 class="card-header">
+            Events for project <span style="font-style: italic">{{name}}</span>
+          </h5>
+          <script>
+            let page = 0;
+            let pageSize = 5;
+
+            function incrementPage() {
+              const current = page;
+              page += 1;
+              console.log("Incremented page to", page);
+              return current;
+            }
+          </script>
+          <div class="card-body" style="max-height: 400px">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">User ID</th>
+                  <th scope="col">Event Type</th>
+                  <th scope="col">Created At</th>
+                  <th scope="col">Custom fields</th>
+                </tr>
+              </thead>
+              <tbody
+                hx-get="/api/project/{{id}}/events"
+                hx-vars="page:incrementPage(),pageSize:pageSize"
+                hx-trigger="load,intersect once"
+                hx-swap="innerHTML"
+              >
+                <!-- Event rows will be appended here -->
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
