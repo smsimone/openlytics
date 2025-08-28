@@ -1,0 +1,28 @@
+import html from "../../utilities";
+
+export default function Skeleton() {
+  return html`
+    <html lang="en">
+      <head>
+        {{page_title}}
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" type="image/x-icon" href="/public/favicon.ico" />
+        <script
+          src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
+          integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"
+          crossorigin="anonymous"
+        ></script>
+        <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/sse.js"></script>
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+        />
+      </head>
+      <body hx-ext="sse">
+        {{navbar}}
+        <div class="m-3">{{body}}</div>
+      </body>
+    </html>
+  `;
+}

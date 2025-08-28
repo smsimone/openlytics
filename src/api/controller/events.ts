@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { loadTemplate } from "../../utils/templater";
 import db from "../../db";
+import EventRow from "../../views/pages/event_row";
 
 export async function getProjectEvents(req: Request, res: Response) {
   const projectId = parseInt(req.params.id);
@@ -18,17 +18,5 @@ export async function getProjectEvents(req: Request, res: Response) {
     return;
   }
 
-  res.send(
-    events
-      .map((ev) =>
-        loadTemplate("templates/components/event_row", {
-          id: ev.id,
-          eventType: ev.eventType,
-          userId: ev.userId,
-          createdAt: ev.createdAt.toISOString(),
-          customFields: JSON.stringify(ev.customFields, null, 2),
-        })
-      )
-      .join("")
-  );
+  res.send(events.map(EventRow).join(""));
 }

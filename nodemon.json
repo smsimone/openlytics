@@ -1,0 +1,9 @@
+{
+  "watch": ["src", "templates", "public"],
+  "ext": "ts,js,json,tsx,html,css",
+  "ignore": ["dist", "node_modules"],
+  "exec": "npx tsx src/main.ts",
+  "env": {
+    "NODE_ENV": "development"
+  }
+}

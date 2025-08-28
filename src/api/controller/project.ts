@@ -1,17 +1,8 @@
 import db from "../../db";
 import { Request, Response } from "express";
 import crypto from "crypto";
-import { loadTemplate, redirect, sendFile } from "../../utils/templater";
-import { Project } from "@prisma/client/edge";
-
-function projectToCard(project: Project): string {
-  return loadTemplate("templates/components/project_card", {
-    name: project.name,
-    description: project.description ?? "",
-    lastEdited: project.updatedAt.toISOString(),
-    id: project.id,
-  });
-}
+import { redirect, sendFile } from "../../utils/templater";
+import projectCard from "../../views/components/project_card";
 
 export async function getProjectList(req: Request, resp: Response) {
   const sessionId = req.cookies.sessionId;
@@ -29,16 +20,43 @@ export async function getProjectList(req: Request, resp: Response) {
   });
 
   if (projects.length === 0) {
-    sendFile(resp, 'templates/components/index_empty_state', '.', {});
+    sendFile(resp, "templates/components/index_empty_state", ".", {});
     return;
   }
 
-  resp.send(`${projects.map(projectToCard).join("\n")}`);
+  // Determina la classe CSS basata sul numero di progetti
+  let containerClass = "";
+  let itemClass = "";
+
+  if (projects.length === 1) {
+    // Un elemento: centrato
+    containerClass = "d-flex justify-content-center";
+    itemClass = "";
+  } else if (projects.length === 2) {
+    // Due elementi: spazio tra di loro
+    containerClass = "d-flex justify-content-between gap-3";
+    itemClass = "";
+  } else {
+    // 3 o più: griglia 3x3
+    containerClass = "row g-3";
+    itemClass = "col-12 col-md-6 col-lg-4";
+  }
+
+  const projectsHtml = projects
+    .map((project) => {
+      if (projects.length >= 3) {
+        return `<div class="${itemClass}">${projectCard(project)}</div>`;
+      }
+      return projectCard(project);
+    })
+    .join("\n");
+
+  resp.send(`<div class="${containerClass}">${projectsHtml}</div>`);
 }
 
 export async function createProject(
   req: Request<{ name: string; description: string }>,
-  resp: Response,
+  resp: Response
 ) {
   const sessionId: string = req.cookies.sessionId;
   const { name, description } = req.body;
@@ -121,7 +139,7 @@ export async function deleteProject(req: Request, resp: Response) {
 
   await db.projectConfiguration.delete({
     where: { projectId: projectId },
-  })
+  });
   await db.project.delete({
     where: { id: projectId },
   });
